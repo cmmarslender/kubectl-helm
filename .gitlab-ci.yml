@@ -1,0 +1,21 @@
+stages:
+  - build
+
+variables:
+  HELM_VERSION: v3.2.0
+
+build:
+  stage: build
+  variables:
+    DOCKER_TAG: "$CI_REGISTRY_IMAGE:$HELM_VERSION"
+    DOCKER_CLI_EXPERIMENTAL: enabled
+  image: registry.gitlab.com/cmmarslender/docker-buildx:stable
+  services:
+    - name: docker:stable-dind
+      command: ["--experimental"]
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+    - docker buildx create --use
+    - docker buildx inspect --bootstrap
+    - docker buildx build --build-arg HELM_VERSION=$HELM_VERSION --platform linux/amd64,linux/arm64,linux/arm/v7 --push -t $DOCKER_TAG .
