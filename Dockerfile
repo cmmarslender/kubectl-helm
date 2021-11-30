@@ -1,10 +1,15 @@
 FROM alpine:latest
 ARG HELM_VERSION
 
-RUN apk add --no-cache curl python3 py-pip bash openssl jq && \
+ENV PATH=$PATH:/root/go/bin
+
+RUN apk add --no-cache curl python3 py-pip bash openssl jq go && \
     apk add --no-cache yq --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community && \
     pip3 install j2cli awscli && \
     curl -fsSL -o get_kubectl.sh https://gitlab.com/cmmarslender/get-kubectl/-/raw/master/get-kubectl.sh && \
     bash get_kubectl.sh && \
     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 && \
-    bash get_helm.sh --version $HELM_VERSION
+    bash get_helm.sh --version $HELM_VERSION && \
+    go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
+    go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest && \
+    go install github.com/brancz/gojsontoyaml@latest
