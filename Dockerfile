@@ -3,7 +3,7 @@ ARG HELM_VERSION
 
 ENV PATH=$PATH:/root/go/bin
 
-RUN apk add --no-cache curl python3 py-pip bash openssl jq go && \
+RUN apk add --no-cache curl python3 py-pip bash openssl jq go git && \
     apk add --no-cache yq --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community && \
     pip3 install j2cli awscli && \
     curl -fsSL -o get_kubectl.sh https://gitlab.com/cmmarslender/get-kubectl/-/raw/master/get-kubectl.sh && \
