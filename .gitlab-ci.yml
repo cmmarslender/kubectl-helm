@@ -18,4 +18,7 @@ build:
     - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
     - docker buildx create --use
     - docker buildx inspect --bootstrap
-    - docker buildx build --build-arg HELM_VERSION=$HELM_VERSION --platform linux/amd64,linux/arm64,linux/arm/v7 --push -t $DOCKER_TAG .
+    # Build alpine based images
+    - docker buildx build --build-arg HELM_VERSION=$HELM_VERSION --platform linux/amd64,linux/arm64 --push -t $DOCKER_TAG .
+    # Build debian based images
+    - docker buildx build --build-arg HELM_VERSION=$HELM_VERSION --platform linux/amd64,linux/arm64 --push -t $DOCKER_TAG-debian -f Dockerfile-debian .
