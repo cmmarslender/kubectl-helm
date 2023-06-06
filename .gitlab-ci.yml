@@ -19,6 +19,6 @@ build:
     - docker buildx create --use
     - docker buildx inspect --bootstrap
     # Build alpine based images
-    - docker buildx build --build-arg HELM_VERSION=$HELM_VERSION --platform linux/amd64,linux/arm64 --push -t $DOCKER_TAG .
+    - docker buildx build --build-arg HELM_VERSION=$HELM_VERSION --platform linux/amd64,linux/arm64 --push -t $DOCKER_TAG -t $CI_REGISTRY_IMAGE:v3 .
     # Build debian based images
-    - docker buildx build --build-arg HELM_VERSION=$HELM_VERSION --platform linux/amd64,linux/arm64 --push -t $DOCKER_TAG-debian -f Dockerfile-debian .
+    - docker buildx build --build-arg HELM_VERSION=$HELM_VERSION --platform linux/amd64,linux/arm64 --push -t $DOCKER_TAG-debian -t $CI_REGISTRY_IMAGE:v3-debian -f Dockerfile-debian .
