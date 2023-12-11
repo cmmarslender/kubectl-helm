@@ -4,7 +4,7 @@ ARG HELM_VERSION
 ENV PATH=$PATH:/root/go/bin
 
 RUN apk add --no-cache apache2-utils curl wget python3 py-pip bash openssl jq go git && \
-    pip3 install j2cli awscli && \
+    pip3 install --break-system-packages j2cli awscli && \
     curl -fsSL -o get_kubectl.sh https://gitlab.com/cmmarslender/get-kubectl/-/raw/master/get-kubectl.sh && \
     bash get_kubectl.sh && \
     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 && \
