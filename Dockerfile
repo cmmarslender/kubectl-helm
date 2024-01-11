@@ -3,7 +3,7 @@ ARG HELM_VERSION
 
 ENV PATH=$PATH:/root/go/bin
 
-RUN apk add --no-cache apache2-utils curl wget python3 py-pip bash openssl jq go git && \
+RUN apk add --no-cache apache2-utils curl wget python3 py-pip bash openssl openssh-client jq go git && \
     if [ "$(uname -m)" = "aarch64" ]; then export K0SARCH="arm64"; else export K0SARCH="x64"; fi && \
     pip3 install --break-system-packages j2cli awscli && \
     curl -fsSL -o get_kubectl.sh https://gitlab.com/cmmarslender/get-kubectl/-/raw/master/get-kubectl.sh && \
