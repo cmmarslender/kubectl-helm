@@ -5,7 +5,8 @@ ENV PATH=$PATH:/root/go/bin:/usr/local/go/bin
 
 RUN apt-get update && apt-get install -y apache2-utils curl wget python3 python3-pip bash openssl jq git && \
     LATEST_GO=$(curl -s https://latest.cmm.io/golang | sed s/0.0/0/) && \
-    if [ "$(uname -m)" = "aarch64" ]; then export ARCH="arm64"; export K0SARCH="arm64"; else export ARCH="amd64"; export K0SARCH="x86"; fi && \
+    if [ "$(uname -m)" = "aarch64" ]; then export ARCH="arm64"; else export ARCH="amd64"; fi && \
+    if [ "$(uname -m)" = "aarch64" ]; then export K0SARCH="arm64"; else export K0SARCH="x86"; fi && \
     wget https://go.dev/dl/go${LATEST_GO}.linux-${ARCH}.tar.gz && \
     tar -C /usr/local -xzf go${LATEST_GO}.linux-${ARCH}.tar.gz && \
     pip3 install --break-system-packages j2cli awscli && \
@@ -13,7 +14,7 @@ RUN apt-get update && apt-get install -y apache2-utils curl wget python3 python3
     bash get_kubectl.sh && \
     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 && \
     bash get_helm.sh --version $HELM_VERSION && \
-    wget -q -O /usr/local/bin/k0sctl "https://github.com/k0sproject/k0sctl/releases/latest/download/k0sctl-linux-$K0SARCH" && \
+    wget -q -O /usr/local/bin/k0sctl "https://github.com/k0sproject/k0sctl/releases/latest/download/k0sctl-linux-${K0SARCH}" && \
     chmod +x /usr/local/bin/k0sctl && \
     go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
     go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest && \
