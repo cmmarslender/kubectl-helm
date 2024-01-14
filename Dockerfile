@@ -1,7 +1,10 @@
+FROM hashicorp/vault:latest as vault
 FROM alpine:latest
 ARG HELM_VERSION
 
 ENV PATH=$PATH:/root/go/bin
+
+COPY --from=vault /bin/vault /bin/
 
 RUN apk add --no-cache apache2-utils curl wget python3 py-pip bash openssl openssh-client jq go git && \
     if [ "$(uname -m)" = "aarch64" ]; then export K0SARCH="arm64"; else export K0SARCH="x64"; fi && \
