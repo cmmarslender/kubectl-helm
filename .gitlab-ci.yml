@@ -28,7 +28,7 @@ build-debian:
     DOCKER_CLI_EXPERIMENTAL: enabled
   image: registry.gitlab.com/cmmarslender/docker-buildx:stable
   services:
-    - name: docker:stable-dind
+    - name: docker:25-dind
       command: ["--experimental"]
   script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
