@@ -7,6 +7,7 @@ ENV PATH=$PATH:/root/go/bin
 COPY --from=vault /bin/vault /bin/
 
 RUN apk add --no-cache apache2-utils curl wget python3 py-pip bash openssl openssh-client jq go git && \
+    if [ "$(uname -m)" = "aarch64" ]; then export ARCH="arm64"; else export ARCH="amd64"; fi && \
     if [ "$(uname -m)" = "aarch64" ]; then export K0SARCH="arm64"; else export K0SARCH="x64"; fi && \
     pip3 install --break-system-packages j2cli awscli && \
     curl -fsSL -o get_kubectl.sh https://gitlab.com/cmmarslender/get-kubectl/-/raw/master/get-kubectl.sh && \
@@ -17,6 +18,8 @@ RUN apk add --no-cache apache2-utils curl wget python3 py-pip bash openssl opens
     chmod +x /usr/local/bin/k0sctl && \
     LATEST_ISTIO=$(curl -s https://latest.cmm.io/istio) && \
     curl -L https://istio.io/downloadIstio | ISTIO_VERSION=$LATEST_ISTIO sh - && \
+    wget -q -O /usr/local/bin/calicoctl "https://github.com/projectcalico/calico/releases/latest/download/calicoctl-linux-${ARCH}" -o calicoctl && \
+    chmod +x /usr/local/bin/calicoctl && \
     ln -s "/istio-$LATEST_ISTIO/bin/istioctl" /bin/istioctl && \
     go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
     go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest && \
