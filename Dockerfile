@@ -2,14 +2,19 @@ FROM hashicorp/vault:latest as vault
 FROM alpine:latest
 ARG HELM_VERSION
 
-ENV PATH=$PATH:/root/go/bin
+ENV PYENV_ROOT=/root/.pyenv
+ENV PATH=$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH:/root/go/bin
 
 COPY --from=vault /bin/vault /bin/
 
-RUN apk add --no-cache apache2-utils curl wget python3 py-pip bash openssl openssh-client jq go git && \
+RUN apk add --no-cache apache2-utils bash build-base bzip2-dev curl git go jq libffi-dev openssl openssh-client openssl-dev readline-dev sqlite-dev tk-dev wget xz-dev zlib-dev && \
     if [ "$(uname -m)" = "aarch64" ]; then export ARCH="arm64"; else export ARCH="amd64"; fi && \
     if [ "$(uname -m)" = "aarch64" ]; then export K0SARCH="arm64"; else export K0SARCH="x64"; fi && \
-    pip3 install --break-system-packages j2cli awscli && \
+    git clone https://github.com/pyenv/pyenv.git ~/.pyenv && \
+    pyenv install 3.11 && \
+    pyenv global 3.11 && \
+    pip install --upgrade pip && \
+    pip install --no-cache-dir j2cli awscli && \
     curl -fsSL -o get_kubectl.sh https://gitlab.com/cmmarslender/get-kubectl/-/raw/master/get-kubectl.sh && \
     bash get_kubectl.sh && \
     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 && \
