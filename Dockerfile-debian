@@ -30,8 +30,9 @@ RUN apt-get update && apt-get install -y apache2-utils bash build-essential curl
     curl -L https://istio.io/downloadIstio | ISTIO_VERSION=$LATEST_ISTIO sh - && \
     wget -q -O /usr/local/bin/calicoctl "https://github.com/projectcalico/calico/releases/latest/download/calicoctl-linux-${ARCH}" -o calicoctl && \
     chmod +x /usr/local/bin/calicoctl && \
-    ln -s "/istio-$LATEST_ISTIO/bin/istioctl" /bin/istioctl && \
-    go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
+    ln -s "/istio-$LATEST_ISTIO/bin/istioctl" /bin/istioctl
+
+RUN go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
     go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest && \
     go install github.com/brancz/gojsontoyaml@latest && \
     go install github.com/mikefarah/yq/v4@latest
