@@ -32,6 +32,7 @@ RUN apt-get update && apt-get install -y apache2-utils bash build-essential curl
     chmod +x /usr/local/bin/calicoctl && \
     ln -s "/istio-$LATEST_ISTIO/bin/istioctl" /bin/istioctl
 
+# These steps are broken currently because of https://github.com/golang/go/issues/68976
 RUN go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
     go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest && \
     go install github.com/brancz/gojsontoyaml@latest && \
