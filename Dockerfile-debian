@@ -8,7 +8,6 @@ RUN apt-get update && apt-get install -y apache2-utils bash build-essential curl
     LATEST_GO=$(curl -s https://latest.cmm.io/golang | sed s/0.0/0/) && \
     LATEST_VAULT=$(curl -s https://latest.cmm.io/vault) && \
     if [ "$(uname -m)" = "aarch64" ]; then export ARCH="arm64"; else export ARCH="amd64"; fi && \
-    if [ "$(uname -m)" = "aarch64" ]; then export K0SARCH="arm64"; else export K0SARCH="x64"; fi && \
     wget https://releases.hashicorp.com/vault/${LATEST_VAULT}/vault_${LATEST_VAULT}_linux_${ARCH}.zip && \
     unzip vault_${LATEST_VAULT}_linux_${ARCH}.zip && \
     rm vault_${LATEST_VAULT}_linux_${ARCH}.zip && \
@@ -24,7 +23,7 @@ RUN apt-get update && apt-get install -y apache2-utils bash build-essential curl
     bash get_kubectl.sh && \
     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 && \
     bash get_helm.sh --version $HELM_VERSION && \
-    wget -q -O /usr/local/bin/k0sctl "https://github.com/k0sproject/k0sctl/releases/latest/download/k0sctl-linux-${K0SARCH}" && \
+    wget -q -O /usr/local/bin/k0sctl "https://github.com/k0sproject/k0sctl/releases/latest/download/k0sctl-linux-${ARCH}" && \
     chmod +x /usr/local/bin/k0sctl && \
     LATEST_ISTIO=$(curl -s https://latest.cmm.io/istio) && \
     curl -L https://istio.io/downloadIstio | ISTIO_VERSION=$LATEST_ISTIO sh - && \
