@@ -7,7 +7,6 @@ ENV PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH:/root/go/bin:/usr/local/go/bin
 # Go fixed to 1.22.8 for arm qemu build issues
 RUN apt-get update && apt-get install -y apache2-utils bash build-essential curl git jq libbz2-dev libffi-dev liblzma-dev libncursesw5-dev libreadline-dev libsqlite3-dev libssl-dev libxml2-dev libxmlsec1-dev openssl openssh-client tk-dev unzip wget xz-utils zlib1g-dev && \
     LATEST_GO=$(curl -s https://latest.cmm.io/golang | sed s/0.0/0/) && \
-    LATEST_GO="1.22.8" && \
     LATEST_VAULT=$(curl -s https://latest.cmm.io/vault) && \
     if [ "$(uname -m)" = "aarch64" ]; then export ARCH="arm64"; else export ARCH="amd64"; fi && \
     wget https://releases.hashicorp.com/vault/${LATEST_VAULT}/vault_${LATEST_VAULT}_linux_${ARCH}.zip && \
