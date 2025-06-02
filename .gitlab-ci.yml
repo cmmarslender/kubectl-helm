@@ -2,7 +2,7 @@ stages:
   - build
 
 variables:
-  HELM_VERSION: v3.18.0
+  HELM_VERSION: v3.18.2
 
 build:
   stage: build
