@@ -24,5 +24,5 @@ Alpine Based:
 `registry.gitlab.com/cmmarslender/kubectl-helm:$HELM_VERSION`
 
 Debian Based:
-e
+
 `registry.gitlab.com/cmmarslender/kubectl-helm:$HELM_VERSION-debian`
