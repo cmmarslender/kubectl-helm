@@ -12,7 +12,7 @@ Debian Based:
 
 `ghcr.io/cmmarslender/kubectl-helm:$HELM_VERSION-debian`
 
-Available tags can be [referenced here](https://gitlab.com/cmmarslender/kubectl-helm/container_registry)
+Available tags can be [referenced here](https://github.com/cmmarslender/kubectl-helm/pkgs/container/kubectl-helm)
 
 
 ## GitLab Images
