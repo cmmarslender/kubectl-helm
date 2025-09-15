@@ -1,0 +1,70 @@
+name: Build Images
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '8 21 * * 0'
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  packages: write
+
+concurrency:
+  group: "main"
+
+env:
+  HELM_VERSION: v3.19.0
+
+jobs:
+  package_alpine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v5
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          cache-image: ${{ inputs.enable-qemu-cache }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.11.1
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      - name: Login to GitLab Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: registry.gitlab.com
+          username: ${{ secrets.GITLAB_REGISTRY_USER }}
+          password: ${{ secrets.GITLAB_REGISTRY_TOKEN }}
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ghcr.io/cmmarslender/kubectl-helm
+            registry.gitlab.com/cmmarslender/kubectl-helm
+          tags: |
+            type=raw,value=v3
+            type=raw,value=${{ env.HELM_VERSION }}
+
+      - name: Build Docker Container
+        uses: docker/build-push-action@v6
+        with:
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64
+          build-args: |
+            "HELM_VERSION=${{ env.HELM_VERSION }}"
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}

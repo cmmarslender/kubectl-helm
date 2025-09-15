@@ -6,10 +6,23 @@ Image always has latest kubectl from build time and specified version of helm
 
 Alpine Based:
 
-`registry.gitlab.com/cmmarslender/kubectl-helm:$HELM_VERSION`
+`ghcr.io/cmmarslender/kubectl-helm:$HELM_VERSION`
 
 Debian Based: 
 
-`registry.gitlab.com/cmmarslender/kubectl-helm:$HELM_VERSION-debian`
+`ghcr.io/cmmarslender/kubectl-helm:$HELM_VERSION-debian`
 
-Available tags can be [refereced here](https://gitlab.com/cmmarslender/kubectl-helm/container_registry)
+Available tags can be [referenced here](https://gitlab.com/cmmarslender/kubectl-helm/container_registry)
+
+
+## GitLab Images
+
+This project used to live in gitlab, and for continuity of any workflows using the gitlab container registry urls, the following images will be maintained for now.
+
+Alpine Based:
+
+`registry.gitlab.com/cmmarslender/kubectl-helm:$HELM_VERSION`
+
+Debian Based:
+e
+`registry.gitlab.com/cmmarslender/kubectl-helm:$HELM_VERSION-debian`
