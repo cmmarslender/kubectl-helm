@@ -29,6 +29,13 @@ RUN apt-get update && apt-get install -y apache2-utils bash build-essential curl
     LATEST_ISTIO=$(curl -s https://latest.cmm.io/istio) && \
     curl -L https://istio.io/downloadIstio | ISTIO_VERSION=$LATEST_ISTIO sh - && \
     wget -q -O /usr/local/bin/calicoctl "https://github.com/projectcalico/calico/releases/latest/download/calicoctl-linux-${ARCH}" -o calicoctl && \
+    CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt) && \
+    curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/${CILIUM_CLI_VERSION}/cilium-linux-${ARCH}.tar.gz{,.sha256sum} && \
+    sha256sum -c cilium-linux-${ARCH}.tar.gz.sha256sum && \
+    tar xzf cilium-linux-${ARCH}.tar.gz && \
+    mv ./cilium /usr/local/bin/cilium && \
+    rm -f cilium-linux-${ARCH}.tar.gz && \
+    rm -f cilium-linux-${ARCH}.tar.gz.sha256sum && \
     chmod +x /usr/local/bin/calicoctl && \
     ln -s "/istio-$LATEST_ISTIO/bin/istioctl" /bin/istioctl
 

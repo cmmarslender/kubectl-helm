@@ -33,6 +33,15 @@ RUN if [ "$(uname -m)" = "aarch64" ]; then export ARCH="arm64"; else export ARCH
     wget -q -O /usr/local/bin/calicoctl "https://github.com/projectcalico/calico/releases/latest/download/calicoctl-linux-${ARCH}" -o calicoctl && \
     chmod +x /usr/local/bin/calicoctl
 
+RUN if [ "$(uname -m)" = "aarch64" ]; then export ARCH="arm64"; else export ARCH="amd64"; fi && \
+    CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt) && \
+    curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/${CILIUM_CLI_VERSION}/cilium-linux-${ARCH}.tar.gz{,.sha256sum} && \
+    sha256sum -c cilium-linux-${ARCH}.tar.gz.sha256sum && \
+    tar xzf cilium-linux-${ARCH}.tar.gz && \
+    rm -f cilium-linux-${ARCH}.tar.gz && \
+    rm -f cilium-linux-${ARCH}.tar.gz.sha256sum && \
+    mv ./cilium /usr/local/bin/cilium
+
 RUN go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
     go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest && \
     go install github.com/brancz/gojsontoyaml@latest && \
