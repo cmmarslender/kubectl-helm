@@ -18,7 +18,7 @@ concurrency:
 
 env:
   HELM_VERSION: v3.19.4
-  HELM4_VERSION: v4.0.3
+  HELM4_VERSION: v4.0.4
 
 jobs:
   package_alpine:
