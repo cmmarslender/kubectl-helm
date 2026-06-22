@@ -7,7 +7,7 @@ ENV PATH=$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH:/root/go/bin
 
 COPY --from=vault /bin/vault /bin/
 
-RUN apk add --no-cache apache2-utils bash build-base bzip2-dev curl git go jq libffi-dev openssl openssh-client openssl-dev readline-dev sqlite-dev tk-dev wget xz-dev zlib-dev
+RUN apk add --no-cache apache2-utils bash build-base bzip2-dev curl git go jq libffi-dev openssl openssh-client openssl-dev readline-dev sqlite-dev sudo tk-dev wget xz-dev zlib-dev
 
 RUN git clone https://github.com/pyenv/pyenv.git ~/.pyenv && \
     pyenv install 3.11 && \
