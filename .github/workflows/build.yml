@@ -17,8 +17,8 @@ concurrency:
   group: "main"
 
 env:
-  HELM_VERSION: v3.21.3
-  HELM4_VERSION: v4.2.3
+  HELM_VERSION: v3.21.4
+  HELM4_VERSION: v4.2.4
 
 jobs:
   package_alpine:
