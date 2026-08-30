@@ -47,4 +47,5 @@ RUN if [ "$(uname -m)" = "aarch64" ]; then export ARCH="arm64"; else export ARCH
 RUN go install github.com/google/go-jsonnet/cmd/jsonnet@latest && \
     go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest && \
     go install github.com/brancz/gojsontoyaml@latest && \
-    go install github.com/mikefarah/yq/v4@latest
+    go install github.com/mikefarah/yq/v4@latest && \
+    go install github.com/helmfile/chartify/cmd/chartify@latest
