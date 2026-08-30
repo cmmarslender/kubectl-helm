@@ -1,4 +1,5 @@
 FROM hashicorp/vault:latest AS vault
+FROM ghcr.io/helmfile/helmfile:latest AS helmfile
 FROM alpine:latest
 ARG HELM_VERSION
 
@@ -6,6 +7,7 @@ ENV PYENV_ROOT=/root/.pyenv
 ENV PATH=$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH:/root/go/bin
 
 COPY --from=vault /bin/vault /bin/
+COPY --from=helmfile /usr/local/bin/helmfile /bin/
 
 RUN apk add --no-cache apache2-utils bash build-base bzip2-dev curl git go jq libffi-dev openssl openssh-client openssl-dev readline-dev sqlite-dev sudo tk-dev wget xz-dev zlib-dev
 

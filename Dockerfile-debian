@@ -1,8 +1,11 @@
+FROM ghcr.io/helmfile/helmfile:latest AS helmfile
 FROM debian:latest
 ARG HELM_VERSION
 
 ENV PYENV_ROOT=/root/.pyenv
 ENV PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH:/root/go/bin:/usr/local/go/bin"
+
+COPY --from=helmfile /usr/local/bin/helmfile /bin/
 
 # Go fixed to 1.22.8 for arm qemu build issues
 RUN apt-get update && apt-get install -y apache2-utils bash build-essential curl git jq libbz2-dev libffi-dev liblzma-dev libncursesw5-dev libreadline-dev libsqlite3-dev libssl-dev libxml2-dev libxmlsec1-dev openssl openssh-client sudo tk-dev unzip wget xz-utils zlib1g-dev && \
