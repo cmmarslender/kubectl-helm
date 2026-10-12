@@ -3,19 +3,13 @@ FROM ghcr.io/helmfile/helmfile:latest AS helmfile
 FROM alpine:latest
 ARG HELM_VERSION
 
-ENV PYENV_ROOT=/root/.pyenv
-ENV PATH=$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH:/root/go/bin
+ENV PATH=$PATH:/root/go/bin
 
 COPY --from=vault /bin/vault /bin/
 COPY --from=helmfile /usr/local/bin/helmfile /bin/
 
-RUN apk add --no-cache apache2-utils bash build-base bzip2-dev curl git go jq libffi-dev openssl openssh-client openssl-dev readline-dev sqlite-dev sudo tk-dev wget xz-dev zlib-dev
-
-RUN git clone https://github.com/pyenv/pyenv.git ~/.pyenv && \
-    pyenv install 3.11 && \
-    pyenv global 3.11 && \
-    pip install --upgrade pip && \
-    pip install --no-cache-dir j2cli awscli
+RUN apk add --no-cache apache2-utils aws-cli bash build-base curl git go jq openssl openssh-client py3-pip python3 sudo wget && \
+    pip install --no-cache-dir --break-system-packages jinjanator
 
 RUN curl -fsSL -o get_kubectl.sh https://gitlab.com/cmmarslender/get-kubectl/-/raw/master/get-kubectl.sh && \
     bash get_kubectl.sh
