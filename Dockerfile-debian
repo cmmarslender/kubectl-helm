@@ -29,6 +29,9 @@ RUN apt-get update && apt-get install -y apache2-utils bash build-essential curl
     bash get_helm.sh --version $HELM_VERSION && \
     wget -q -O /usr/local/bin/k0sctl "https://github.com/k0sproject/k0sctl/releases/latest/download/k0sctl-linux-${ARCH}" && \
     chmod +x /usr/local/bin/k0sctl && \
+    wget -qO /bin/talosctl \
+      "https://github.com/siderolabs/talos/releases/latest/download/talosctl-linux-${ARCH}" && \
+    chmod +x /bin/talosctl && \
     LATEST_ISTIO=$(curl -s https://latest.cmm.io/istio) && \
     curl -L https://istio.io/downloadIstio | ISTIO_VERSION=$LATEST_ISTIO sh - && \
     wget -q -O /usr/local/bin/calicoctl "https://github.com/projectcalico/calico/releases/latest/download/calicoctl-linux-${ARCH}" -o calicoctl && \
