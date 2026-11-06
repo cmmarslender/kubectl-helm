@@ -21,6 +21,16 @@ RUN if [ "$(uname -m)" = "aarch64" ]; then export ARCH="arm64"; else export ARCH
     wget -q -O /usr/local/bin/k0sctl "https://github.com/k0sproject/k0sctl/releases/latest/download/k0sctl-linux-${ARCH}" && \
     chmod +x /usr/local/bin/k0sctl
 
+RUN ARCH="$(apk --print-arch)" && \
+    case "$ARCH" in \
+      x86_64) TALOS_ARCH=amd64 ;; \
+      aarch64) TALOS_ARCH=arm64 ;; \
+      *) echo "Unsupported architecture: $ARCH" >&2; exit 1 ;; \
+    esac && \
+    wget -qO /bin/talosctl \
+      "https://github.com/siderolabs/talos/releases/latest/download/talosctl-linux-${TALOS_ARCH}" && \
+    chmod +x /bin/talosctl
+
 RUN LATEST_ISTIO=$(curl -s https://latest.cmm.io/istio) && \
     curl -L https://istio.io/downloadIstio | ISTIO_VERSION=$LATEST_ISTIO sh - && \
     ln -s "/istio-$LATEST_ISTIO/bin/istioctl" /bin/istioctl
