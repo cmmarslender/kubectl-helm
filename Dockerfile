@@ -31,10 +31,6 @@ RUN ARCH="$(apk --print-arch)" && \
       "https://github.com/siderolabs/talos/releases/latest/download/talosctl-linux-${TALOS_ARCH}" && \
     chmod +x /bin/talosctl
 
-RUN LATEST_ISTIO=$(curl -s https://latest.cmm.io/istio) && \
-    curl -L https://istio.io/downloadIstio | ISTIO_VERSION=$LATEST_ISTIO sh - && \
-    ln -s "/istio-$LATEST_ISTIO/bin/istioctl" /bin/istioctl
-
 RUN if [ "$(uname -m)" = "aarch64" ]; then export ARCH="arm64"; else export ARCH="amd64"; fi && \
     wget -q -O /usr/local/bin/calicoctl "https://github.com/projectcalico/calico/releases/latest/download/calicoctl-linux-${ARCH}" -o calicoctl && \
     chmod +x /usr/local/bin/calicoctl
